@@ -14,6 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Configuration
@@ -21,21 +25,21 @@ public class RagConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(RagConfiguration.class);
 
-    @Value("/tmp/vectorstore.json")
-    private String vectorStorePath;
+    @Value("vectorstore.json")
+    private String vectorStoreName;
 
     @Value("classpath:/docs/olympic-faq.txt")
     private Resource faq;
 
     @Bean
-    SimpleVectorStore simpleVectorStore(EmbeddingClient embeddingClient) {
+    SimpleVectorStore simpleVectorStore(EmbeddingClient embeddingClient) throws IOException {
         var simpleVectorStore = new SimpleVectorStore(embeddingClient);
-        var vectorStoreFile = new File(vectorStorePath);
+        var vectorStoreFile = getVectorStoreFile();
         if (vectorStoreFile.exists()) {
             log.info("Vector Store File Exists,");
             simpleVectorStore.load(vectorStoreFile);
         } else {
-            log.info("Vector Store File Does Not Exist, load documents");
+            log.info("Vector Store File Does Not Exist, loading documents");
             TextReader textReader = new TextReader(faq);
             textReader.getCustomMetadata().put("filename", "olympic-faq.txt");
             List<Document> documents = textReader.get();
@@ -45,6 +49,12 @@ public class RagConfiguration {
             simpleVectorStore.save(vectorStoreFile);
         }
         return simpleVectorStore;
+    }
+
+    private File getVectorStoreFile() {
+        Path path = Paths.get("src", "main", "resources", "data");
+        String absolutePath = path.toFile().getAbsolutePath() + "/" + vectorStoreName;
+        return new File(absolutePath);
     }
 
 }
