@@ -160,7 +160,7 @@ public Generation getBooksByKen() {
 Request 
 
 ```
-http :8080/api/books/ken
+http :8080/api/books/craig
 ```
 
 Response
