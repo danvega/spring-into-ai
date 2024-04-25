@@ -17,6 +17,7 @@ Whether you want to add chatbots to your app, generate recommendations, or analy
 - Bring You Own Data
   - Stuff the Prompt 
   - RAG Demo
+  - Function
 
 ## Getting Started Demo
 
@@ -346,4 +347,59 @@ Date: Thu, 28 Mar 2024 12:18:27 GMT
 Keep-Alive: timeout=60
 
 The next three Summer Olympic Games will be held in Paris, France in 2024, Los Angeles, USA in 2028, and Brisbane, Australia in 2032.
+```
+
+### Function Demo 
+
+The code related to this demo is in the `functions` package. In this demo there is a `CityController` with a
+`/cities` endpoint that will answer questions about cities around the world. 
+
+Request
+
+```
+http :8080/cities message=="What is the largest city in Ohio"
+```
+
+Response 
+
+```
+HTTP/1.1 200
+Connection: keep-alive
+Content-Length: 51
+Content-Type: text/plain;charset=UTF-8
+Date: Thu, 25 Apr 2024 21:38:46 GMT
+Keep-Alive: timeout=60
+
+The largest city in Ohio by population is Columbus.
+```
+
+If you were to ask it what the current weather is like in Columbus it wouldn't know the answer to that.
+
+Request
+
+```
+http :8080/cities message=="What is current weather in Columbus"
+```
+
+Response 
+
+```
+HTTP/1.1 200
+Connection: keep-alive
+Content-Length: 185
+Content-Type: text/plain;charset=UTF-8
+Date: Thu, 25 Apr 2024 21:40:54 GMT
+Keep-Alive: timeout=60
+
+Sorry, as an AI, I'm unable to provide real-time information such as current weather updates. I recommend checking a reliable weather website or app for the most up-to-date information.
+```
+
+We can define a function by declaring a bean and the weather service will be responsible for determining the current weather. 
+
+```java
+@Bean
+@Description("Get the current weather conditions for the given city.")
+public Function<WeatherService.Request,WeatherService.Response> currentWeatherFunction() {
+    return new WeatherService(props);
+}
 ```

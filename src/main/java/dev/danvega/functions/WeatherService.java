@@ -34,6 +34,7 @@ public class WeatherService implements Function<WeatherService.Request, WeatherS
         return response;
     }
 
+    // mapping the response of the Weather API to records. I only mapped the information I was interested in.
     public record Request(String city) {}
     public record Response(Location location,Current current) {}
     public record Location(String name, String region, String country, Long lat, Long lon){}
