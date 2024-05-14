@@ -17,8 +17,8 @@ public class ChatController {
     }
 
     @GetMapping("/api/generate")
-    public Map generate(@RequestParam(value = "message", defaultValue = "Tell me a Dad Joke") String message) {
-        return Map.of("generation",chatClient.call(message));
+    public String generate(@RequestParam(value = "message", defaultValue = "Tell me a dad joke about dogs") String message) {
+        return chatClient.call(message);
     }
 
 }
