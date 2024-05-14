@@ -22,28 +22,28 @@ public class SongsController {
         this.chatClient = chatClient;
     }
 
-    @GetMapping("/songs")
-    public List<String> getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Taylor Swift") String artist) {
-        var message = """
-                Please give me a list of top 10 songs for the artist {artist}.  If you don't know the answer , just say "I don't know".
-                {format}
-                """;
-        ListOutputParser outputParser = new ListOutputParser(new DefaultConversionService());
-        PromptTemplate promptTemplate = new PromptTemplate(message, Map.of("artist", artist,"format",outputParser.getFormat()));
-        Prompt prompt = promptTemplate.create();
-        ChatResponse response = chatClient.call(prompt);
-        return outputParser.parse(response.getResult().getOutput().getContent());
-    }
-
 //    @GetMapping("/songs")
-//    public String getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Taylor Swift") String artist) {
+//    public List<String> getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Taylor Swift") String artist) {
 //        var message = """
 //                Please give me a list of top 10 songs for the artist {artist}.  If you don't know the answer , just say "I don't know".
+//                {format}
 //                """;
-//        PromptTemplate promptTemplate = new PromptTemplate(message, Map.of("artist", artist));
+//        ListOutputParser outputParser = new ListOutputParser(new DefaultConversionService());
+//        PromptTemplate promptTemplate = new PromptTemplate(message, Map.of("artist", artist,"format",outputParser.getFormat()));
 //        Prompt prompt = promptTemplate.create();
 //        ChatResponse response = chatClient.call(prompt);
-//        return response.getResult().getOutput().getContent();
+//        return outputParser.parse(response.getResult().getOutput().getContent());
 //    }
+
+    @GetMapping("/songs")
+    public String getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Taylor Swift") String artist) {
+        var message = """
+                Please give me a list of top 10 songs for the artist {artist}.  If you don't know the answer , just say "I don't know".
+                """;
+        PromptTemplate promptTemplate = new PromptTemplate(message, Map.of("artist", artist));
+        Prompt prompt = promptTemplate.create();
+        ChatResponse response = chatClient.call(prompt);
+        return response.getResult().getOutput().getContent();
+    }
 
 }
