@@ -3,7 +3,7 @@ package dev.danvega.rag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingClient;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
@@ -15,7 +15,6 @@ import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -32,8 +31,8 @@ public class RagConfiguration {
     private Resource faq;
 
     @Bean
-    SimpleVectorStore simpleVectorStore(EmbeddingClient embeddingClient) throws IOException {
-        var simpleVectorStore = new SimpleVectorStore(embeddingClient);
+    SimpleVectorStore simpleVectorStore(EmbeddingModel embeddingModel) throws IOException {
+        var simpleVectorStore = new SimpleVectorStore(embeddingModel);
         var vectorStoreFile = getVectorStoreFile();
         if (vectorStoreFile.exists()) {
             log.info("Vector Store File Exists,");

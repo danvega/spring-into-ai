@@ -1,27 +1,29 @@
-package dev.danvega.functions;
+package dev.danvega.memory;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CityController {
+public class StatefulController {
 
     private final ChatClient chatClient;
 
-    public CityController(ChatClient.Builder builder) {
+    public StatefulController(ChatClient.Builder builder) {
         this.chatClient = builder
-                .defaultSystem("You are a helpful AI Assistant answering questions about cities around the world.")
-//                .defaultFunctions("currentWeatherFunction")
+//                .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
     }
 
-    @GetMapping("/cities")
-    public String cityFaq(@RequestParam String message) {
+    @GetMapping("/chat")
+    public String home(@RequestParam String message) {
         return chatClient.prompt()
                 .user(message)
                 .call()
                 .content();
     }
+
 }
