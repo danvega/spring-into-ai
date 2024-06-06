@@ -13,7 +13,7 @@ public class CityController {
     public CityController(ChatClient.Builder builder) {
         this.chatClient = builder
                 .defaultSystem("You are a helpful AI Assistant answering questions about cities around the world.")
-//                .defaultFunctions("currentWeatherFunction")
+                .defaultFunctions("currentWeatherFunction")
                 .build();
     }
 

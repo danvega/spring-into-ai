@@ -18,6 +18,14 @@ public class ActorController {
                 .build();
     }
 
+    @GetMapping("/films-string")
+    public String getActorFilmsString() {
+        return chatClient.prompt()
+                .user("Generate a filmography for a Anthony Hopkins for the year 2010.")
+                .call()
+                .content();
+    }
+
     @GetMapping("/films")
     public ActorFilms getActorFilms() {
         return chatClient.prompt()

@@ -13,7 +13,8 @@ public class ChatController {
     private final ChatClient chatClient;
 
     public ChatController(ChatClient.Builder builder) {
-        this.chatClient = builder.build();
+        this.chatClient = builder
+                .build();
     }
 
     @GetMapping("/")

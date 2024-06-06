@@ -14,7 +14,7 @@ public class StatefulController {
 
     public StatefulController(ChatClient.Builder builder) {
         this.chatClient = builder
-//                .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
+                .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
     }
 
